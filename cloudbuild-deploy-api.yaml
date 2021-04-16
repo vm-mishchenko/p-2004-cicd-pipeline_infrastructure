@@ -1,5 +1,35 @@
 steps:
+  # Fetch service infrastructure configurations
   - name: 'gcr.io/cloud-builders/git'
     args: [ 'clone', 'https://github.com/vm-mishchenko/p-dev-pipeline-api-infrastructure' ]
-  - name: 'alpine'
-    args: [ "node", "./p-dev-pipeline-api-infrastructure/get.js" ]
+
+  # Extract and prepare required params from the configuration for the next step.
+  - name: 'node'
+    entrypoint: /bin/bash
+    args:
+      - -c # use "breakout syntax" to run bash commands directly
+      - |
+        # save the IMAGE to deploy as environment variable
+        export build_image_to_deploy=$(node get.js) &&
+
+        # write all "build_" variables to the persistent volume "/workspace"
+        env | grep "^build_" > /workspace/build_vars
+
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: /bin/bash
+    args:
+      - -c # use "breakout syntax" to run bash commands directly
+      - |
+        # Read environment variables from disk
+        source /workspace/build_vars &&
+
+        # deploy new version of API service
+        gcloud run deploy api \
+          --image=gcr.io/vmmi-pipeline-development/$(echo $build_image_to_deploy) \
+          --allow-unauthenticated \
+          --port=5000 \
+          --max-instances=1 \
+          --platform=managed \
+          --region=us-west2 \
+          --project=vmmi-pipeline-development
