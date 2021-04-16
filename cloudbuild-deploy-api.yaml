@@ -1,0 +1,5 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    args: [ 'clone', 'https://github.com/vm-mishchenko/p-dev-pipeline-api-infrastructure' ]
+  - name: 'alpine'
+    args: [ "node", "./p-dev-pipeline-api-infrastructure/get.js" ]
