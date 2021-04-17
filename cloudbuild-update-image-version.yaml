@@ -18,7 +18,13 @@ steps:
         # commit changes back
         git add -A
         git commit -m 'API Service version was updated to: "${_IMAGE_NAME}"'
-        git push --set-upstream https://${_GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/vm-mishchenko/p-dev-pipeline-api-infrastructure.git master
+        git push --set-upstream https://$$GITHUB_PERSONAL_ACCESS_TOKEN@github.com/vm-mishchenko/p-dev-pipeline-api-infrastructure.git master
+    secretEnv: [ 'GITHUB_PERSONAL_ACCESS_TOKEN' ]
+
 substitutions:
   _IMAGE_NAME: "EXPECTED_TO_GET_FROM_CALLER"
-  _GITHUB_PERSONAL_ACCESS_TOKEN: "EXPECTED_TO_GET_FROM_CALLER"
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/vmmi-pipeline-development/secrets/GITHUB_PERSONAL_ACCESS_TOKEN/versions/latest
+      env: GITHUB_PERSONAL_ACCESS_TOKEN
