@@ -1,5 +1,5 @@
 ## What
-This repository defines how [p-dev-pipeline-api](https://github.com/vm-mishchenko/p-dev-pipeline-api) application should
+This repository defines how [p-2004-cicd-pipeline_api](https://github.com/vm-mishchenko/p-2004-cicd-pipeline_api) application should
 be deployed. Essentially covering CD part in CI/CD process.
 
 ## Why
@@ -32,7 +32,7 @@ when `services.json` is updated.
 
 ### cloudbuild-update-image-version.yaml
 Allows updating `API` service version in `services.json`. Can be called by any automation tool. Currenty, it's called by
-CI process in [p-dev-pipeline-api](https://github.com/vm-mishchenko/p-dev-pipeline-api) repo.
+CI process in [p-2004-cicd-pipeline_api](https://github.com/vm-mishchenko/p-2004-cicd-pipeline_api) repo.
 
 ## Tech details
 Trigger `cloudbuild-update-image-version.yaml` on GCP
