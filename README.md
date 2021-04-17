@@ -22,6 +22,18 @@ Ideally, user should never update the app version manually. It should be handled
 general, it will depend on deployment strategy. The goal of such repo structure to make the whole process as flexible as
 possible, so it can support different strategies.
 
+## Build configurations
+Cloud build configurations can be treated as a functions that can be called directly or in response of some events, e.g.
+new push to repo.
+
+### cloudbuild-deploy-api.yaml
+Takes `API` service version from `services.json` and deploys it to Cloud Run. Executed each time by Google Cloud Build
+when `services.json` is updated.
+
+### cloudbuild-update-image-version.yaml
+Allows updating `API` service version in `services.json`. Can be called by any automation tool. Currenty, it's called by
+CI process in [p-dev-pipeline-api](https://github.com/vm-mishchenko/p-dev-pipeline-api) repo.
+
 ## Tech details
 Trigger `cloudbuild-update-image-version.yaml` on GCP
 ```shell
@@ -34,6 +46,6 @@ Trigger `cloudbuild-update-image-version.yaml` locally
 cloud-build-local --config cloudbuild-update-image-version.yaml \
   --dryrun=false \
   --write-workspace=/home/mue/temp \
-  --substitutions _IMAGE_NAME="api_5a1fef67edf67cc0e6ed6fbdaa1e4c06c0f22b36" \
+  --substitutions _IMAGE_NAME="<IMAGE_NAME>"
   .
 ```
