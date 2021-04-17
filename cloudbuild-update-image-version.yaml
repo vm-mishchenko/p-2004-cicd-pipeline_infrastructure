@@ -4,7 +4,7 @@ steps:
     args:
       - -c # use "breakout syntax" to run bash commands directly
       - |
-        node update-image-version.js ${_IMAGE_NAME}
+        node ./helpers/update-image-version.js ${_IMAGE_NAME}
 
   - name: 'gcr.io/cloud-builders/git'
     entrypoint: /bin/bash

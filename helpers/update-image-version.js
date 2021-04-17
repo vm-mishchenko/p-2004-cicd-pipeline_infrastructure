@@ -1,4 +1,4 @@
-const services = require('./services.json');
+const services = require('../services.json');
 const fs = require('fs');
 
 /*
@@ -10,7 +10,7 @@ const fs = require('fs');
 * */
 const newImageName = process.argv[2];
 
-//change the value in the in-memory object
+// Change the value in the in-memory object
 services.api.image = newImageName;
-//Serialize as JSON and Write it to a file
+// Serialize as JSON and write it to a file
 fs.writeFileSync('./services.json', JSON.stringify(services));
