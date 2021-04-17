@@ -1,23 +1,24 @@
 steps:
-  # Fetch service infrastructure configurations
-  #  - name: 'gcr.io/cloud-builders/git'
-  #    args: [ 'clone', 'https://github.com/vm-mishchenko/p-dev-pipeline-api-infrastructure' ]
-
   - name: 'node'
     entrypoint: /bin/bash
     args:
       - -c # use "breakout syntax" to run bash commands directly
       - |
-        ls -la
-
         node update-image-version.js ${_IMAGE_NAME}
 
+  - name: 'gcr.io/cloud-builders/git'
+    entrypoint: /bin/bash
+    args:
+      - -c # use "breakout syntax" to run bash commands directly
+      - |
+        git init
         git config --global user.email "vm.mishchenko@gmail.com"
         git config --global user.name "vm.mishchenko"
 
         # commit changes back
         git add -A
         git commit -m 'API Service version was updated to: "${_IMAGE_NAME}"'
-
+        git push --set-upstream https://${_GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/vm-mishchenko/p-dev-pipeline-api-infrastructure.git master
 substitutions:
   _IMAGE_NAME: "EXPECTED_TO_GET_FROM_CALLER"
+  _GITHUB_PERSONAL_ACCESS_TOKEN: "EXPECTED_TO_GET_FROM_CALLER"
