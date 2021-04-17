@@ -6,7 +6,8 @@ steps:
       - -c # use "breakout syntax" to run bash commands directly
       - |
         # save the IMAGE to deploy as environment variable
-        export build_image_to_deploy=$(node ./helpers/get.js) &&
+        export build_api_image_to_deploy=$(node ./helpers/get_api_image_version.js)
+        export build_backend_image_to_deploy=$(node ./helpers/get_backend_image_version.js)
 
         # write all "build_" variables to the persistent volume "/workspace"
         env | grep "^build_" > /workspace/build_vars
@@ -22,9 +23,19 @@ steps:
 
         # deploy new version of API service
         gcloud run deploy api \
-          --image=gcr.io/vmmi-pipeline-development/$build_image_to_deploy \
+          --image=gcr.io/vmmi-pipeline-development/$build_api_image_to_deploy \
           --allow-unauthenticated \
           --port=5000 \
+          --max-instances=1 \
+          --platform=managed \
+          --region=us-west2 \
+          --project=vmmi-pipeline-development
+
+        # deploy new version of Backend service
+        gcloud run deploy backend \
+          --image=gcr.io/vmmi-pipeline-development/$build_backend_image_to_deploy \
+          --allow-unauthenticated \
+          --port=8080 \
           --max-instances=1 \
           --platform=managed \
           --region=us-west2 \
