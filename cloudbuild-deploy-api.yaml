@@ -1,8 +1,4 @@
 steps:
-  # Fetch service infrastructure configurations
-  - name: 'gcr.io/cloud-builders/git'
-    args: [ 'clone', 'https://github.com/vm-mishchenko/p-dev-pipeline-api-infrastructure' ]
-
   # Extract and prepare required params from the configuration for the next step.
   - name: 'node'
     entrypoint: /bin/bash
