@@ -1,8 +1,1 @@
-{
-  "api": {
-    "image": "api_2120372556de07a90b6ecf897012a91257ff860f"
-  },
-  "backend": {
-    "image": "backend_1aec472fe310fe75f0ad50072ef4619e26ab10f9"
-  }
-}
+{"api":{"image":"api_88e02795c8316f544ece62718bfa0e5bd1cdcca7"},"backend":{"image":"backend_1aec472fe310fe75f0ad50072ef4619e26ab10f9"}}
